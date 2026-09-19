@@ -14,7 +14,10 @@ export function useProducts() {
     obtenerProductos()
       .then((productoData) => {
         setProducts(productoData);
-        setCategories(Array.isArray(productoData) ? [{ id: 'all', nombre: 'Todas' }] : [{ id: 'all', nombre: 'Todas' }]);
+        const categoryNames = Array.isArray(productoData)
+          ? [...new Set(productoData.map((product) => product.categoria).filter((category) => category && category.toLowerCase() !== 'todas'))]
+          : [];
+        setCategories(categoryNames.map((nombre) => ({ id: nombre, nombre })));
       })
       .catch(() => setError('No pudimos conectar con el catálogo de StoreGamer.'))
       .finally(() => setLoading(false));
