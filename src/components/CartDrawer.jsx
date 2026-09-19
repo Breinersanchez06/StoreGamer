@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import placeholderImage from '../assets/console-placeholder.svg';
 import { formatPrice, resolveImage } from '../utils/formatters';
 
-function CartItem({ item, onRemove, index }) {
+function CartItem({ item, index, onRemove, onUpdateQuantity }) {
   const [imageSrc, setImageSrc] = useState(resolveImage(item.imagen));
 
   useEffect(() => {
@@ -12,14 +12,21 @@ function CartItem({ item, onRemove, index }) {
   return (
     <div className="cart-item">
       <img src={imageSrc} alt="" onError={() => setImageSrc(placeholderImage)} />
-      <div><strong>{item.nombre}</strong><span>{formatPrice(item.precio)}</span></div>
-      <button onClick={() => onRemove(index)}>×</button>
+      <div>
+        <strong>{item.nombre}</strong>
+        <span>{formatPrice(item.precio)} × {item.quantity || 1}</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <button type="button" onClick={() => onUpdateQuantity(index, -1)}>-</button>
+        <button type="button" onClick={() => onUpdateQuantity(index, 1)}>+</button>
+        <button type="button" onClick={() => onRemove(index)}>×</button>
+      </div>
     </div>
   );
 }
 
-export default function CartDrawer({ items, onClose, onRemove }) {
-  const total = items.reduce((sum, item) => sum + Number(item.precio), 0);
+export default function CartDrawer({ items, onClose, onRemove, onUpdateQuantity, onCheckout, user }) {
+  const total = items.reduce((sum, item) => sum + Number(item.precio) * Number(item.quantity || 1), 0);
 
   return (
     <div className="drawer-backdrop" onClick={onClose}>
@@ -30,9 +37,20 @@ export default function CartDrawer({ items, onClose, onRemove }) {
         </div>
         {items.length ? (
           <>
-            {items.map((item, index) => <CartItem key={`${item.id}-${index}`} item={item} onRemove={onRemove} index={index} />)}
+            {items.map((item, index) => (
+              <CartItem
+                key={`${item.id}-${index}`}
+                item={item}
+                index={index}
+                onRemove={onRemove}
+                onUpdateQuantity={onUpdateQuantity}
+              />
+            ))}
             <div className="cart-total"><span>Total</span><strong>{formatPrice(total)}</strong></div>
-            <button className="checkout-button">Continuar compra <span>↗</span></button>
+            <button className="checkout-button" onClick={onCheckout} disabled={!user}>
+              {user ? 'Continuar compra' : 'Inicia sesión para comprar'}
+              <span>↗</span>
+            </button>
           </>
         ) : (
           <div className="empty-cart"><span>◌</span><p>Tu carrito está vacío.</p><small>Agrega una consola para comenzar.</small></div>

@@ -25,7 +25,10 @@ export default function Header({ cartCount, onCartOpen, user, onLogout, canAcces
           <Link className={location.pathname === '/admin' ? 'active' : ''} to="/admin">Inventario</Link>
         )}
         {user ? (
-          <span className="session-user">Hola, {user.nombre || user.email || 'Admin'}</span>
+          <>
+            <span className="session-user">Hola, {user.nombre || user.email || 'Admin'}</span>
+            <Link className={location.pathname === '/mis-pedidos' ? 'active' : ''} to="/mis-pedidos">Mis pedidos</Link>
+          </>
         ) : (
           <Link className={location.pathname === '/login' ? 'active' : ''} to="/login">Iniciar sesión</Link>
         )}
