@@ -6,6 +6,17 @@ export const obtenerUsuarios = () => {
     .then((response) => response.json());
 };
 
+export const autenticarUsuario = async (nombre, clave) => {
+  const usuarios = await obtenerUsuarios();
+  const usuario = usuarios.find((item) => {
+    const nombreCoincide = (item.nombre || '').toLowerCase() === String(nombre || '').trim().toLowerCase();
+    const claveCoincide = String(item.clave || '') === String(clave || '');
+    return nombreCoincide && claveCoincide;
+  });
+
+  return usuario || null;
+};
+
 export const loginUsuario = (usuario) => {
   return fetch(USUARIO_API_URL, {
     method: 'POST',
