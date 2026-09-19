@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Console placeholder</title>
+  <desc id="desc">A stylized gaming console placeholder when the image is unavailable.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#edf1ed"/>
+      <stop offset="100%" stop-color="#dfe6df"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <g opacity="0.7" stroke="#7d8a81" stroke-width="10" fill="none">
+    <rect x="180" y="180" width="440" height="220" rx="26"/>
+    <circle cx="300" cy="250" r="38"/>
+    <circle cx="500" cy="250" r="38"/>
+    <rect x="250" y="302" width="120" height="42" rx="20"/>
+    <rect x="430" y="302" width="120" height="42" rx="20"/>
+  </g>
+  <g fill="#7d8a81" font-family="Arial, sans-serif" text-anchor="middle">
+    <text x="400" y="520" font-size="42" font-weight="700">Sin imagen</text>
+  </g>
+</svg>
